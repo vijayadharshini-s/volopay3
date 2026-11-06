@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eventurox | Finance Operations Comparison</title>
+<style>
+:root{--bg:#f3f7f8;--panel:#fff;--ink:#172b35;--muted:#647985;--line:#dce7e9;--accent:#087f8c;--accent2:#f29b38;--soft:#e3f4f3;--good:#16865b;--warn:#b76b12;--bad:#bd4b4b;--shadow:0 10px 28px rgba(28,65,75,.07)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif}
+header{background:linear-gradient(120deg,#075c68,#0b8990);color:#fff;padding:34px max(22px,calc((100vw - 1240px)/2)) 28px}
+header .eyebrow{letter-spacing:.13em;text-transform:uppercase;font-size:11px;font-weight:800;opacity:.8}h1{font-size:clamp(27px,4vw,42px);line-height:1.1;margin:9px 0 10px;letter-spacing:-.04em}header p{max-width:780px;color:#d7f1f0;margin:0}
+main{max-width:1240px;margin:24px auto;padding:0 20px 50px}.notice{background:#fff5df;border:1px solid #f3d69a;color:#77501c;padding:12px 15px;border-radius:12px;margin-bottom:18px}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin:18px 0}
+.tabs{display:flex;gap:8px;background:#e5edef;padding:5px;border-radius:12px}.tabs button,.btn{border:0;border-radius:9px;padding:10px 14px;font-weight:700;cursor:pointer;background:transparent;color:var(--ink)}.tabs button.active{background:#fff;box-shadow:0 2px 8px #173a441a;color:var(--accent)}.btn{background:var(--accent);color:#fff}.btn.secondary{background:#e5f1f1;color:#075c68}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:var(--shadow)}.kpi small{color:var(--muted);display:block;font-weight:650}.kpi strong{font-size:30px;letter-spacing:-.04em;display:block;margin:8px 0 3px}.kpi span{font-size:12px;color:var(--muted)}
+.section{margin-top:22px}.section h2{font-size:21px;letter-spacing:-.025em;margin:0 0 12px}.two{display:grid;grid-template-columns:1.15fr .85fr;gap:14px}.three{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.chart{height:245px;display:flex;align-items:end;gap:18px;padding:18px 10px 28px;border-bottom:1px solid var(--line);position:relative}.bar-group{height:100%;flex:1;display:flex;align-items:end;justify-content:center;gap:7px;position:relative}.bar{width:min(34px,38%);border-radius:7px 7px 2px 2px;position:relative;cursor:pointer;transition:height .25s}.bar.today{background:var(--accent2)}.bar.after{background:var(--accent)}.bar:hover{filter:brightness(.94)}.bar b{position:absolute;top:-23px;left:50%;transform:translateX(-50%);font-size:11px;white-space:nowrap;color:var(--muted)}.xlabel{position:absolute;bottom:-25px;font-size:11px;color:var(--muted);white-space:nowrap}
+.legend{display:flex;gap:16px;font-size:12px;color:var(--muted);margin-top:33px}.dot{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:5px}
+input,select{border:1px solid var(--line);border-radius:8px;padding:9px 10px;background:#fff;color:var(--ink);width:100%;font:inherit}.assumptions{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:5px;font-weight:650}
+.task{padding:11px 12px;margin:8px 0;border:1px solid var(--line);border-radius:10px;background:#fbfdfd;color:#36535d;font-size:13px}.task:last-child{border:0}.task-head{display:flex;justify-content:space-between;gap:10px;font-weight:750}.task small{color:var(--muted)}.track{height:10px;background:#edf2f3;border-radius:20px;overflow:hidden;margin:10px 0 5px}.fill{height:100%;border-radius:20px;background:var(--accent2)}.fill.after{background:var(--accent)}
+table{border-collapse:collapse;width:100%;font-size:13px}th,td{text-align:left;padding:11px 9px;border-bottom:1px solid var(--line)}th{color:var(--muted);font-weight:700;background:#f7fafb}.pill{display:inline-block;padding:3px 8px;border-radius:20px;background:var(--soft);color:var(--accent);font-size:11px;font-weight:800}
+.hierarchy{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.crumb{padding:8px 11px;border:1px solid var(--line);border-radius:9px;background:#fff;color:var(--accent);cursor:pointer;font-weight:700}.crumb:disabled{color:var(--muted);cursor:default;background:#f4f7f7}
+.detail-list{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.detail{padding:12px;border:1px solid var(--line);border-radius:11px;background:#fbfdfd;cursor:pointer}.detail:hover{border-color:var(--accent)}
+.compare-note{font-size:12px;color:var(--muted);margin-top:10px}
+footer{color:var(--muted);font-size:12px;text-align:center;padding:24px}
+
+
+.insight-strip{display:flex;gap:10px;align-items:flex-start;background:#fff7e8;border:1px solid #f5dfb7;color:#77501c;border-radius:11px;padding:12px 13px;margin-top:14px;font-size:12px}
+.insight-strip b{white-space:nowrap;color:#9a641b}
+.insight-strip span{color:#806b4d}
+.insight-strip.teal{background:#eaf8f6;border-color:#c8eae5;color:#176c68}
+.insight-strip.teal b{color:#087f8c}.insight-strip.teal span{color:#527b7b}
+
+.section-intro{color:var(--muted);margin:-5px 0 14px}
+.workflow-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.workflow-card{background:linear-gradient(145deg,#ffffff,#f5fbfc);border:1px solid #d7e8eb;border-radius:18px;padding:18px;box-shadow:0 10px 26px rgba(16,91,105,.08);min-height:166px;position:relative;overflow:hidden;transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease;outline:none}
+.workflow-card:before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:linear-gradient(180deg,#08a6a6,#6c78f5)}
+.workflow-card:hover,.workflow-card:focus,.workflow-card.expanded{transform:translateY(-4px);box-shadow:0 18px 36px rgba(16,91,105,.16);border-color:#69c6c8}
+.workflow-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.workflow-card h3{margin:0 0 7px;font-size:16px;color:#173b49}
+.workflow-card .desc{margin:0;color:#607985;font-size:13px;max-width:95%}
+.workflow-card .hint{margin-top:14px;color:#07858c;font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase}
+.workflow-icon{width:36px;height:36px;border-radius:11px;background:#e2f7f5;color:#07858c;display:grid;place-items:center;font-size:18px;flex-shrink:0}
+.workflow-detail{display:none;margin-top:16px;padding-top:14px;border-top:1px solid #dcebed}
+.workflow-card:hover .workflow-detail,.workflow-card:focus .workflow-detail,.workflow-card.expanded .workflow-detail{display:block;animation:fadeIn .2s ease}
+.workflow-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:12px}
+.workflow-stat{background:#edf7f8;border-radius:10px;padding:9px}
+.workflow-stat b{display:block;font-size:17px;color:#087f8c}
+.workflow-stat span{font-size:10px;color:#637d86}
+.mini-chart{width:100%;height:112px;background:#fff;border:1px solid #e4eff0;border-radius:12px;padding:7px}
+.mini-chart svg{width:100%;height:100%;overflow:visible}
+.chart-label{font-size:10px;fill:#6b8088}
+.chart-line-before{fill:none;stroke:#f29b38;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.chart-line-after{fill:none;stroke:#087f8c;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.workflow-legend{display:flex;gap:14px;font-size:10px;color:#657b83;margin:7px 0 0}
+.workflow-legend i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:850px){.workflow-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.workflow-grid{grid-template-columns:1fr}}
+
+@media(max-width:850px){.grid{grid-template-columns:repeat(2,1fr)}.two,.three{grid-template-columns:1fr}.assumptions{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.grid,.assumptions,.detail-list{grid-template-columns:1fr}.toolbar{align-items:flex-start}.tabs{width:100%}.tabs button{flex:1;font-size:12px}.chart{gap:8px}}
+</style></head>
+<body>
+<header><div class="eyebrow">Volopay impact workspace · illustrative model</div><h1>Eventurox finance operations<br>before & after Volopay</h1><p>Prepared for Harish, Finance & Operations Head. Explore the estimated operational impact, adjust the assumptions, and compare an overview-only dashboard with a drill-down experience.</p></header>
+<main>
+<div class="notice"><b>Illustrative figures:</b> All values are planning assumptions, not verified Eventurox data or guaranteed Volopay outcomes. Replace them with Harish's actual volumes, timings and spend before sharing externally.</div>
+<div class="toolbar"><div class="tabs"><button id="drillTab" class="active">With drill-down</button><button id="overviewTab">Without drill-down</button></div><div><button class="btn secondary" id="reset">Reset assumptions</button> <button class="btn" onclick="window.print()">Print / Save PDF</button></div></div>
+<section class="grid" id="kpis"></section>
+<section class="section two">
+<div class="card"><h2>Monthly effort: today vs with Volopay</h2><div id="effortChart" class="chart"></div><div class="legend"><span><i class="dot" style="background:var(--accent2)"></i>Today</span><span><i class="dot" style="background:var(--accent)"></i>With Volopay</span></div><p class="compare-note">Select any bar to inspect the related workflow when drill-down is enabled.</p></div>
+<div class="card"><h2>Estimated time freed over 12 months</h2><div id="annualChart" class="chart"></div><p class="compare-note">Cumulative estimate based on the monthly hours saved in the model.</p></div>
+</section>
+<section class="section card"><h2>Assumptions — edit to model Eventurox</h2><div class="assumptions">
+<div class="field"><label>Events per month</label><input id="events" type="number" min="1" max="500" value="10"></div>
+<div class="field"><label>Receipt items / month</label><input id="receipts" type="number" min="0" value="600"></div>
+<div class="field"><label>Days to close a project today</label><input id="closeDays" type="number" min="1" value="15"></div>
+<div class="field"><label>Finance visibility delay (days)</label><input id="visibility" type="number" min="0" value="7"></div>
+</div><p class="compare-note">Task volumes and time removed are editable below. The dashboard recalculates immediately.</p></section>
+<section class="section">
+<h2>Where the time goes</h2>
+<p class="section-intro">Hover over a workflow card (or focus it using Tab) to reveal the operational explanation, key statistics and a two-line comparison graph.</p>
+<div id="workflowCards" class="workflow-grid"></div>
+</section>
+<section class="section two">
+<div class="card"><h2>Project-level expense snapshot</h2><p class="compare-note">Compare approved budgets against actual event spending and spot projects that need attention.</p><div id="projects"></div><div class="insight-strip"><b>Finance focus</b><span>Review projects with overspend first, then reconcile remaining advances and receipts.</span></div></div>
+<div class="card"><h2>What changes with Volopay</h2><p class="compare-note">From manual follow-ups to controlled, visible spending workflows.</p><div id="benefits"></div><div class="insight-strip teal"><b>Expected operational shift</b><span>Faster visibility, clearer ownership and fewer manual hand-offs.</span></div></div>
+</section>
+<section class="section card" id="drillSection"><h2>Explore the hierarchy</h2><p class="compare-note">Start at the portfolio level, open a project, then inspect the expense categories behind its spend. Select a tile to drill down; use the breadcrumb buttons to move back.</p><div class="hierarchy" id="crumbs"></div><div id="drillContent"></div><div class="insight-strip"><b>Why this matters</b><span>Harish can move from “How much are we spending?” to “Which event and expense category is driving the variance?” without rebuilding reports manually.</span></div></section>
+<footer>Eventurox × Volopay · Working discussion model · Confirm all assumptions with the client before using as a business case.</footer>
+</main>
+<script>
+const baseTasks=[
+{name:"Receipt chasing & collection",vol:600,mins:6,removed:60,group:"Receipts",note:"Late receipt follow-ups and missing documentation"},
+{name:"Expense verification & approval",vol:600,mins:5,removed:40,group:"Verify",note:"Manual checking, policy review and approval routing"},
+{name:"Excel & voucher data entry",vol:600,mins:4,removed:70,group:"Excel",note:"Re-keying transaction and voucher details"},
+{name:"Petty cash & advance reconciliation",vol:120,mins:15,removed:50,group:"Petty cash",note:"Matching advances, bills and remaining balances"},
+{name:"Project P&L and MIS preparation",vol:10,mins:360,removed:40,group:"P&L / MIS",note:"Compiling project-level financial reports"},
+{name:"Urgent payment coordination",vol:27,mins:60,removed:50,group:"Urgent pay",note:"Ad-hoc payment requests and management coordination"}
+];
+let drill=true,level=0,selectedProject=0,selectedTask=0;
+const projects=[{name:"Project A · Annual conference",budget:500000,actual:580000,owner:"Events team",cats:[["Venue & production",310000],["Travel & logistics",145000],["Food & hospitality",125000]]},{name:"Project B · Brand launch",budget:400000,actual:365000,owner:"Marketing team",cats:[["Venue & production",180000],["Travel & logistics",85000],["Food & hospitality",100000]]},{name:"Project C · Partner summit",budget:300000,actual:270000,owner:"Partnerships team",cats:[["Venue & production",125000],["Travel & logistics",65000],["Food & hospitality",80000]]}];
+const $=id=>document.getElementById(id), num=id=>Math.max(0,Number($(id).value)||0), money=n=>"₹"+(n/100000).toFixed(2)+"L", fmt=n=>Math.round(n).toLocaleString("en-IN");
+function taskHours(t){return t.vol*t.mins/60}
+
+function renderWorkflowCards(tasks){
+ const icons=["🧾","✓","▤","₹","📊","↗"];
+ const descriptions=[
+ "Follow up on missing receipts, collect event bills and chase employees for expense details.",
+ "Check submitted expenses against policy, verify supporting documents and route approvals.",
+ "Re-enter voucher and transaction details into spreadsheets and consolidate records.",
+ "Track employee advances, petty cash usage, supporting bills and outstanding balances.",
+ "Compile event-level costs and prepare project profitability and management reports.",
+ "Coordinate urgent vendor or employee payments and seek one-off management approvals."
+ ];
+ const cardRoot=$("workflowCards");
+ cardRoot.innerHTML=tasks.map((t,i)=>{
+   const pointsBefore=[100,92,78,70,58,48], pointsAfter=pointsBefore.map(v=>Math.max(12,v*(1-t.removed/100)));
+   const toPoints=arr=>arr.map((v,j)=>`${j===0?"M":"L"} ${18+j*52} ${91-v*.72}`).join(" ");
+   const saved=t.today-t.after;
+   return `<article class="workflow-card" tabindex="0" aria-label="${t.name}. Hover or focus to view details">
+    <div class="workflow-top"><div><h3>${t.name}</h3><p class="desc">${descriptions[i]}</p></div><div class="workflow-icon">${icons[i]}</div></div>
+    <div class="hint">Hover to explore · ${Math.round(saved)} hours saved / month</div>
+    <div class="workflow-detail">
+      <div class="workflow-stats">
+       <div class="workflow-stat"><b>${t.today.toFixed(1)}h</b><span>Today / month</span></div>
+       <div class="workflow-stat"><b>${t.after.toFixed(1)}h</b><span>With Volopay</span></div>
+       <div class="workflow-stat"><b>${t.removed}%</b><span>Modelled reduction</span></div>
+      </div>
+      <div class="mini-chart"><svg viewBox="0 0 300 105" role="img" aria-label="Illustrative two-line comparison over six checkpoints">
+       <path d="M18 12 V91 H282" stroke="#dce8e9" fill="none"/>
+       <path class="chart-line-before" d="${toPoints(pointsBefore)}"/>
+       <path class="chart-line-after" d="${toPoints(pointsAfter)}"/>
+       ${[0,1,2,3,4,5].map(j=>`<circle cx="${18+j*52}" cy="${91-pointsBefore[j]*.72}" r="2.8" fill="#f29b38"/><circle cx="${18+j*52}" cy="${91-pointsAfter[j]*.72}" r="2.8" fill="#087f8c"/>`).join("")}
+       <text x="18" y="103" class="chart-label">Start</text><text x="252" y="103" class="chart-label">Month end</text>
+      </svg></div>
+      <div class="workflow-legend"><span><i style="background:#f29b38"></i>Today</span><span><i style="background:#087f8c"></i>With Volopay</span></div>
+      <p class="compare-note">${t.vol.toLocaleString("en-IN")} items × ${t.mins} minutes each. Figures are illustrative planning assumptions.</p>
+    </div>
+   </article>`;
+ }).join("");
+ cardRoot.querySelectorAll(".workflow-card").forEach(card=>{
+   card.addEventListener("click",()=>card.classList.toggle("expanded"));
+ });
+}
+function render(){
+ const tasks=baseTasks.map((t,i)=>({...t,vol:i===0?num("receipts"):i===4?num("events"):t.vol,today:taskHours({...t,vol:i===0?num("receipts"):i===4?num("events"):t.vol}),after:taskHours({...t,vol:i===0?num("receipts"):i===4?num("events"):t.vol})*(1-t.removed/100)}));
+ const today=tasks.reduce((s,t)=>s+t.today,0),after=tasks.reduce((s,t)=>s+t.after,0),saved=today-after;
+ renderWorkflowCards(tasks);
+ $("kpis").innerHTML=[["Monthly admin effort",fmt(today)+" h","Estimated current workload"],["With Volopay",fmt(after)+" h","Estimated remaining effort"],["Time freed",fmt(saved)+" h","≈ "+Math.round(saved/Math.max(today,1)*100)+"% reduction"],["Project closure",Math.max(1,num("closeDays")-6)+" days","Illustrative target; today "+num("closeDays")+" days"]].map(x=>`<div class="card kpi"><small>${x[0]}</small><strong>${x[1]}</strong><span>${x[2]}</span></div>`).join("");
+ const max=Math.max(...tasks.map(t=>t.today),1);$("effortChart").innerHTML=tasks.map((t,i)=>`<div class="bar-group"><div class="bar today" style="height:${Math.max(3,t.today/max*88)}%" title="${t.name}: ${t.today.toFixed(1)}h today" onclick="inspectTask(${i})"><b>${Math.round(t.today)}h</b></div><div class="bar after" style="height:${Math.max(3,t.after/max*88)}%" title="${t.name}: ${t.after.toFixed(1)}h with Volopay" onclick="inspectTask(${i})"><b>${Math.round(t.after)}h</b></div><div class="xlabel">${t.group}</div></div>`).join("");
+ const months=[3,6,9,12];$("annualChart").innerHTML=months.map(m=>`<div class="bar-group"><div class="bar after" style="height:${Math.max(4,(saved*m)/(saved*12||1)*88)}%;width:38px"><b>${fmt(saved*m)}h</b></div><div class="xlabel">Month ${m}</div></div>`).join("");
+ $("projects").innerHTML=`<table><thead><tr><th>Project</th><th>Budget</th><th>Actual</th><th>Variance</th></tr></thead><tbody>${projects.map((p,i)=>`<tr><td>${drill?`<a href="#" onclick="selectProject(${i});return false">${p.name}</a>`:p.name}</td><td>${money(p.budget)}</td><td>${money(p.actual)}</td><td style="color:${p.actual>p.budget?'var(--bad)':'var(--good)'}">${p.actual>p.budget?'+':''}${Math.round((p.actual/p.budget-1)*100)}%</td></tr>`).join("")}</tbody></table>`;
+ $("benefits").innerHTML=["Cards and UPI capture transactions digitally","Receipts can be attached close to the time of spend","Spend tagged by employee, department and project","Budgets and approval rules help control spend","Finance can review transactions sooner","Approved spend can sync to accounting workflows"].map(x=>`<div class="task">✓ ${x}</div>`).join("");
+ $("drillSection").style.display=drill?"block":"none";
+ if(drill)renderDrill();
+}
+function renderDrill(){
+ const names=["Portfolio","Project","Expense category"];let html=names.map((n,i)=>`<button class="crumb" ${i>level?"disabled":""} onclick="goLevel(${i})">${n}</button>`).join("");$("crumbs").innerHTML=html;
+ if(level===0){$("drillContent").innerHTML=`<div class="detail-list">${projects.map((p,i)=>`<div class="detail" onclick="selectProject(${i})"><b>${p.name}</b><p>${money(p.actual)} actual spend</p><span class="pill">${p.owner}</span></div>`).join("")}</div>`}
+ if(level===1){let p=projects[selectedProject];$("drillContent").innerHTML=`<h3>${p.name}</h3><p>Budget ${money(p.budget)} · Actual ${money(p.actual)} · ${p.actual>p.budget?"Over budget":"Within budget"}</p><div class="detail-list">${p.cats.map((c,i)=>`<div class="detail" onclick="selectTask(${i})"><b>${c[0]}</b><p>${money(c[1])}</p><span class="pill">View category</span></div>`).join("")}</div>`}
+ if(level===2){let p=projects[selectedProject],c=p.cats[selectedTask];$("drillContent").innerHTML=`<h3>${p.name} / ${c[0]}</h3><div class="grid"><div class="card kpi"><small>Category spend</small><strong>${money(c[1])}</strong></div><div class="card kpi"><small>Illustrative transactions</small><strong>${Math.round(c[1]/8500)}</strong></div><div class="card kpi"><small>Review status</small><strong>In review</strong></div><div class="card kpi"><small>Control</small><strong>Budget rule</strong></div></div><p class="compare-note">In a live deployment, this level would show actual transaction rows, cardholder, merchant, receipt status and approval history from connected data.</p>`}
+}
+function goLevel(l){level=l;renderDrill()}function selectProject(i){selectedProject=i;level=1;renderDrill()}function selectTask(i){selectedTask=i;level=2;renderDrill()}function inspectTask(i){if(!drill)return;selectedTask=i%3;level=2;renderDrill();$("drillSection").scrollIntoView({behavior:"smooth"})}
+$("drillTab").onclick=()=>{drill=true;$("drillTab").classList.add("active");$("overviewTab").classList.remove("active");render()};
+$("overviewTab").onclick=()=>{drill=false;$("overviewTab").classList.add("active");$("drillTab").classList.remove("active");render()};
+["events","receipts","closeDays","visibility"].forEach(id=>$(id).addEventListener("input",render));
+$("reset").onclick=()=>{Object.entries({events:10,receipts:600,closeDays:15,visibility:7}).forEach(([k,v])=>$(k).value=v);render()};
+render();
+</script></body></html>
